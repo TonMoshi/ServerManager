@@ -17,6 +17,7 @@ const createServer = async (serverName: String): Promise<any> => {
 
 const getTree = async (): Promise<any> => {
   try {
+    const command = commands.generateBaseTree;
     const { stdout, stderr } = await exec(commands.generateBaseTree);
     return stdout;
   } catch (error) {

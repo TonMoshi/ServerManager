@@ -9,4 +9,9 @@ router.post("/server", async function (req, res) {
   res.send(response);
 });
 
+router.get("/server", async function (req, res) {
+  const response = await getTree();
+  res.send(response);
+});
+
 export { router };
