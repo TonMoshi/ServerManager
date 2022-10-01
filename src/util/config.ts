@@ -9,42 +9,24 @@ dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 // as someone could skip these varibales or not setup a .env file at all
 
 interface ENV {
-  RAWG_API_KEY: string | undefined;
-  RAWG_API_URL: string | undefined;
+  MAIN_FOLDER: string | undefined;
   PORT: number | undefined;
   BASE_URL: string | undefined;
-  DB_NAME: string;
-  DB_USER: string;
-  DB_PASS: string;
-  DB_HOST: string;
-  DB_PORT: number;
 }
 
 interface Config {
-  RAWG_API_KEY: string;
-  RAWG_API_URL: string;
+  MAIN_FOLDER: string;
   PORT: number;
   BASE_URL: string;
-  DB_NAME: string;
-  DB_USER: string;
-  DB_PASS: string;
-  DB_HOST: string;
-  DB_PORT: number;
 }
 
 // Loading process.env as ENV interface
 
 const getConfig = (): ENV => {
   return {
-    RAWG_API_KEY: process.env.RAWG_API_KEY,
-    RAWG_API_URL: process.env.RAWG_API_URL,
+    MAIN_FOLDER: process.env.MAIN_FOLDER,
     PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
     BASE_URL: process.env.BASE_URL,
-    DB_NAME: process.env.DB_NAME,
-    DB_USER: process.env.DB_USER,
-    DB_PASS: process.env.DB_PASS,
-    DB_HOST: process.env.DB_HOST,
-    DB_PORT: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
   };
 };
 

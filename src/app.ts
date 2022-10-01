@@ -1,14 +1,15 @@
 import express from "express";
+import config from "./util/config";
+import { checkAuth } from "./interceptor/checks";
 
 const app = express();
 
-import { router as gamesRoutes } from "./controller/prueba";
-const allowedOrigins = ["http://localhost:3000"];
+import { router as serverRoutes } from "./router/serverRouter";
 
-app.use(express.json());
+app.use(checkAuth);
 
-app.use(gamesRoutes);
+app.use(serverRoutes);
 
-app.listen(3000, () => {
-  return console.log(`server is listening on 50`);
+app.listen(config.PORT, () => {
+  return console.log(`server is listening on ${config.PORT}`);
 });
