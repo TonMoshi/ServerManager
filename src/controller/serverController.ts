@@ -1,13 +1,28 @@
-const { exec } = require("child_process");
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
-const executeComandBash = (): any => {
-  exec("bash ~/scritp.sh", (error, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-    if (error !== null) {
-      console.log(`exec error: ${error}`);
-    }
-  });
+import { commands } from "../model/commands";
+
+const createServer = async (serverName: String): Promise<any> => {
+  try {
+    const { stdout, stderr } = await exec(
+      commands.createFolderHierarchy(serverName)
+    );
+    return stdout;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
-export { executeComandBash };
+const getTree = async (): Promise<any> => {
+  try {
+    const { stdout, stderr } = await exec(commands.generateBaseTree);
+    return stdout;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export { createServer, getTree };

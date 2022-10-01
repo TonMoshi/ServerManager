@@ -8,6 +8,7 @@ import { router as serverRoutes } from "./router/serverRouter";
 
 app.use(checkAuth);
 
+app.use(express.json());
 app.use(serverRoutes);
 
 app.listen(config.PORT, () => {
