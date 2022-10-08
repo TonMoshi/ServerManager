@@ -12,12 +12,14 @@ interface ENV {
   MAIN_FOLDER: string | undefined;
   PORT: number | undefined;
   BASE_URL: string | undefined;
+  LOG: string | undefined;
 }
 
 interface Config {
   MAIN_FOLDER: string;
   PORT: number;
   BASE_URL: string;
+  LOG: string;
 }
 
 // Loading process.env as ENV interface
@@ -27,6 +29,7 @@ const getConfig = (): ENV => {
     MAIN_FOLDER: process.env.MAIN_FOLDER,
     PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
     BASE_URL: process.env.BASE_URL,
+    LOG: process.env.LOG,
   };
 };
 
