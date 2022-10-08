@@ -1,6 +1,6 @@
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
-
+import config from "../util/config";
 import { commands } from "../model/commands";
 
 const createServer = async (serverName: String): Promise<any> => {
@@ -16,13 +16,16 @@ const createServer = async (serverName: String): Promise<any> => {
 };
 const createFile = async (
   fileName: String,
+  serverName: String,
   message: String,
   type: String
 ): Promise<any> => {
   try {
-    const filePath = ``;
+    const filePath = `${config.MAIN_FOLDER}/${serverName}/${
+      type === "Logs" ? "Logs" : "Scripts"
+    }/${fileName}`;
     const { stdout, stderr } = await exec(
-      commands.comandTxt(fileName, message)
+      commands.comandTxt(filePath, message)
     );
     return stdout;
   } catch (error) {
@@ -42,4 +45,4 @@ const getTree = async (): Promise<any> => {
   }
 };
 
-export { createServer, getTree };
+export { createServer, getTree, createFile };

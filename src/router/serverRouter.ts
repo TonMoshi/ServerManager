@@ -1,11 +1,15 @@
 import express from "express";
 const router = express.Router();
-import { createServer, getTree } from "../controller/serverController";
+import {
+  createFile,
+  createServer,
+  getTree,
+} from "../controller/serverController";
 
 router.post("/server", async function (req, res) {
-  const { serverName } = req.body;
+  const { fileName, serverName, message, type } = req.body;
   await createServer(serverName);
-  await 
+  await createFile(fileName, serverName, message, type);
   const response = await getTree();
   res.send(response);
 });
