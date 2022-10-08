@@ -14,6 +14,22 @@ const createServer = async (serverName: String): Promise<any> => {
     return null;
   }
 };
+const createFile = async (
+  fileName: String,
+  message: String,
+  type: String
+): Promise<any> => {
+  try {
+    const filePath = ``;
+    const { stdout, stderr } = await exec(
+      commands.comandTxt(fileName, message)
+    );
+    return stdout;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 
 const getTree = async (): Promise<any> => {
   try {

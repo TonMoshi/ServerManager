@@ -5,6 +5,7 @@ import { createServer, getTree } from "../controller/serverController";
 router.post("/server", async function (req, res) {
   const { serverName } = req.body;
   await createServer(serverName);
+  await 
   const response = await getTree();
   res.send(response);
 });
