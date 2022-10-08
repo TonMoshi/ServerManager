@@ -1,3 +1,5 @@
+import { RequestParamType } from "../model/structures.enum";
+
 const checkAuth = (req, res, next) => {
   console.log("Time: ", Date.now());
   if (!req.headers.authorization) {
@@ -7,11 +9,14 @@ const checkAuth = (req, res, next) => {
   }
 };
 
-const checkQueryParam = (requiredParams: string[]) => {
+const checkRequestData = (requiredParams: string[], type: RequestParamType) => {
   return (req, res, next) => {
     let errors = [];
     for (let param of requiredParams) {
-      if (req.query[param] === undefined) {
+      if (
+        (type === RequestParamType.QUERY && req.query[param] === undefined) ||
+        (type === RequestParamType.BODY && req.body[param] === undefined)
+      ) {
         errors.push(`Falta un parámetro obligatorio: ${param}`);
       }
     }
@@ -24,4 +29,4 @@ const checkQueryParam = (requiredParams: string[]) => {
   };
 };
 
-export { checkAuth, checkQueryParam };
+export { checkAuth, checkRequestData };

@@ -13,6 +13,8 @@ interface ENV {
   PORT: number | undefined;
   BASE_URL: string | undefined;
   LOG: string | undefined;
+  SCRIPTS: string | undefined;
+  SERVER: string | undefined;
 }
 
 interface Config {
@@ -20,6 +22,8 @@ interface Config {
   PORT: number;
   BASE_URL: string;
   LOG: string;
+  SCRIPTS: string;
+  SERVER: string;
 }
 
 // Loading process.env as ENV interface
@@ -30,6 +34,8 @@ const getConfig = (): ENV => {
     PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
     BASE_URL: process.env.BASE_URL,
     LOG: process.env.LOG,
+    SCRIPTS: process.env.SCRIPTS,
+    SERVER: process.env.SERVER,
   };
 };
 

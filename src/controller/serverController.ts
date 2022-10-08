@@ -1,48 +1,26 @@
-const util = require("util");
-const exec = util.promisify(require("child_process").exec);
 import config from "../util/config";
 import { commands } from "../model/commands";
+import { FileTypes } from "../model/structures.enum";
+import { getFileByTipe, sanitizeNewLineForEcho } from "../util/utils";
+import { EXECUTE, iExecData } from "../util/exec";
 
-const createServer = async (serverName: String): Promise<any> => {
-  try {
-    const { stdout, stderr } = await exec(
-      commands.createFolderHierarchy(serverName)
-    );
-    return stdout;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+const createServer = async (serverName: String): Promise<iExecData> => {
+  return await EXECUTE(commands.createFolderHierarchy(serverName));
 };
 const createFile = async (
   fileName: String,
   serverName: String,
-  message: String,
-  type: String
+  content: String,
+  type: FileTypes
 ): Promise<any> => {
-  try {
-    const filePath = `${config.MAIN_FOLDER}/${serverName}/${
-      type === "Logs" ? "Logs" : "Scripts"
-    }/${fileName}`;
-    const { stdout, stderr } = await exec(
-      commands.comandTxt(filePath, message)
-    );
-    return stdout;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  const filePath = getFileByTipe(serverName, type, fileName);
+  return await EXECUTE(
+    commands.setFileContent(filePath, sanitizeNewLineForEcho(content))
+  );
 };
 
-const getTree = async (): Promise<any> => {
-  try {
-    const command = commands.generateBaseTree;
-    const { stdout, stderr } = await exec(commands.generateBaseTree);
-    return stdout;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+const getTree = async (): Promise<iExecData> => {
+  return await EXECUTE(commands.generateBaseTree);
 };
 
 export { createServer, getTree, createFile };
