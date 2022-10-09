@@ -1,8 +1,15 @@
 import config from "../util/config";
+import { getFileByTipe } from "../util/utils";
+import { FileTypes } from "./structures.enum";
 
 export const commands = {
   createFolderHierarchy: (serverName: String) =>
-    `mkdir -p ${config.MAIN_FOLDER}/${serverName}/${config.SERVER} ${config.MAIN_FOLDER}/${serverName}/${config.SCRIPTS} ${config.MAIN_FOLDER}/${serverName}/${config.LOG}`,
+    `mkdir -p ${config.MAIN_FOLDER}/${serverName}/${config.SERVER} ` +
+    `&& mkdir -p ${getFileByTipe(serverName, FileTypes.SCRIPT, "")} ` +
+    `&& touch ${getFileByTipe(serverName, FileTypes.SCRIPT, "start.sh")} ` +
+    `&& touch ${getFileByTipe(serverName, FileTypes.SCRIPT, "stop.sh")} ` +
+    `&& mkdir -p ${getFileByTipe(serverName, FileTypes.LOG, "")}` +
+    `&& touch ${getFileByTipe(serverName, FileTypes.LOG, "main.log")}`,
 
   generateBaseTree: `tree ${config.MAIN_FOLDER}`,
 
