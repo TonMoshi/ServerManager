@@ -15,4 +15,16 @@ export const commands = {
 
   setFileContent: (filePath: String, content: String) =>
     `(echo ${content}) > ${filePath}`,
+
+  executeScriptCommand: (
+    fileName: String,
+    serverName: String,
+    parameters: String[]
+  ) =>
+    `sh ${
+      config.MAIN_FOLDER
+    }/${serverName}/Scripts/${fileName} ${parameters.join(" ")}`,
+
+  readFile: (fileName: String, serverName: String, type: FileTypes) =>
+    `cat ${getFileByTipe(serverName, type, fileName)}`,
 };

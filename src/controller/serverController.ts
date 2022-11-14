@@ -7,6 +7,24 @@ import { EXECUTE, iExecData } from "../util/exec";
 const createServer = async (serverName: String): Promise<iExecData> => {
   return await EXECUTE(commands.createFolderHierarchy(serverName));
 };
+
+const executeScript = async (
+  fileName: String,
+  serverName: String,
+  parameters: String[]
+): Promise<iExecData> => {
+  return await EXECUTE(
+    commands.executeScriptCommand(fileName, serverName, parameters)
+  );
+};
+
+const readFile = async (
+  fileName: String,
+  serverName: String,
+  type: FileTypes
+): Promise<iExecData> => {
+  return await EXECUTE(commands.readFile(fileName, serverName, type));
+};
 const createFile = async (
   fileName: String,
   serverName: String,
@@ -23,4 +41,4 @@ const getTree = async (): Promise<iExecData> => {
   return await EXECUTE(commands.generateBaseTree);
 };
 
-export { createServer, getTree, createFile };
+export { createServer, getTree, createFile, executeScript, readFile };

@@ -3,11 +3,13 @@ const router = express.Router();
 import {
   createFile,
   createServer,
+  executeScript,
   getTree,
+  readFile,
 } from "../controller/serverController";
 import { checkRequestData } from "../interceptor/checks";
 import { ERRORS } from "../model/errors.enum";
-import { RequestParamType } from "../model/structures.enum";
+import { FileTypes, RequestParamType } from "../model/structures.enum";
 
 router.post(
   "/server",
@@ -48,5 +50,36 @@ router.get("/server", async function (req, res) {
   const response = await getTree();
   res.send(response);
 });
+
+router.get("/file", async function (req, res) {
+  const { fileName, serverName, type } = req.query;
+  const fileContent = await readFile(
+    fileName as String,
+    serverName as String,
+    type as FileTypes
+  );
+  res.send(fileContent.response);
+});
+
+router.post(
+  "/script",
+  checkRequestData(
+    ["fileName", "serverName", "parameters"],
+    RequestParamType.BODY
+  ),
+  async function (req, res) {
+    const { fileName, serverName, parameters } = req.body;
+    const resCreateServer = await executeScript(
+      fileName,
+      serverName,
+      parameters
+    );
+    if (resCreateServer.status === "KO") {
+      res.status(ERRORS.HTTP_ERROR_500).send(resCreateServer.response);
+    } else {
+      res.send(resCreateServer.response);
+    }
+  }
+);
 
 export { router };
