@@ -58,7 +58,7 @@ router.get("/file", async function (req, res) {
     serverName as String,
     type as FileTypes
   );
-  res.send(fileContent.response);
+  res.send(fileContent);
 });
 
 router.post(
