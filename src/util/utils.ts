@@ -1,6 +1,11 @@
 import config from "./config";
 import { FileTypes } from "../model/structures.enum";
 
+export const getFolderByTipe = (serverName: String, type: FileTypes): String =>
+  `${config.MAIN_FOLDER}/${serverName}/${
+    type === FileTypes.LOG ? config.LOG : config.SCRIPTS
+  }/`;
+
 export const getFileByTipe = (
   serverName: String,
   type: FileTypes,

@@ -4,6 +4,7 @@ import {
   createFile,
   createServer,
   executeScript,
+  getServerList,
   getTree,
   readFile,
 } from "../controller/serverController";
@@ -46,9 +47,18 @@ router.post(
   }
 );
 
-router.get("/server", async function (req, res) {
+router.get("/tree", async function (req, res) {
   const response = await getTree();
   res.send(response);
+});
+
+router.get("/server", async function (req, res) {
+  const response = await getServerList();
+  if (response.error) {
+    res.status(ERRORS.HTTP_ERROR_500).send(response.error);
+  } else {
+    res.send(response.serverList);
+  }
 });
 
 router.get("/file", async function (req, res) {
