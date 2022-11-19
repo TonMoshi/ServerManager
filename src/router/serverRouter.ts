@@ -63,12 +63,19 @@ router.post(
 
 router.post(
   "/server/install",
-  checkRequestData(["serverName"], RequestParamType.BODY),
+  checkRequestData(
+    ["serverName", "startScript", "stopScript"],
+    RequestParamType.BODY
+  ),
   async function (req, res) {
-    const { serverName } = req.body;
+    const { serverName, startScript, stopScript } = req.body;
 
     // Try to install the server
-    const installServerRes = await installServer(serverName);
+    const installServerRes = await installServer(
+      serverName,
+      startScript,
+      stopScript
+    );
     if (installServerRes.status === "KO") {
       res.status(ERRORS.HTTP_ERROR_500).send(installServerRes.response);
     } else {

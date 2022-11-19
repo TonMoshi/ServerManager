@@ -3,6 +3,7 @@ import { FileTypes } from "../model/structures.enum";
 import { EXECUTE, iExecData } from "../util/exec";
 import { IServer } from "../model/server.interface";
 import { getFilesContent } from "./fileController";
+import { IScriptInput } from "../model/service.template";
 
 const createServer = async (serverName: String): Promise<iExecData> => {
   return await EXECUTE(commands.createFolderHierarchy(serverName));
@@ -35,7 +36,11 @@ const getServerList = async (): Promise<{
   });
 };
 
-const installServer = async (serverName: string): Promise<iExecData> => {
+const installServer = async (
+  serverName: string,
+  startScript: IScriptInput,
+  stopScript: IScriptInput
+): Promise<iExecData> => {
   return await EXECUTE(
     commands.installServer(
       serverName,

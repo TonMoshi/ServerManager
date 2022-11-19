@@ -10,22 +10,44 @@ export const commands = {
   sudo: `echo ${config.USERPASSW} | sudo -S `,
   whoami: `whoami`,
   createFolderHierarchy: (serverName: String) =>
-    `mkdir -p ${getMainFolder()}/${serverName}/${config.SERVER} ` +
-    `&& mkdir -p ${getFileByTipe(serverName, FileTypes.SCRIPT, "")} ` +
-    `&& touch ${getFileByTipe(serverName, FileTypes.SCRIPT, "start.sh")} ` +
+    `${commands.sudo} mkdir -p ${getMainFolder()}/${serverName}/${
+      config.SERVER
+    } ` +
+    `&& ${commands.sudo} mkdir -p ${getFileByTipe(
+      serverName,
+      FileTypes.SCRIPT,
+      ""
+    )} ` +
+    `&& ${commands.sudo} touch ${getFileByTipe(
+      serverName,
+      FileTypes.SCRIPT,
+      "start.sh"
+    )} ` +
     `&& ${commands.sudo} chmod 7777 ${getFileByTipe(
       serverName,
       FileTypes.SCRIPT,
       "start.sh"
     )} ` +
-    `&& touch ${getFileByTipe(serverName, FileTypes.SCRIPT, "stop.sh")} ` +
+    `&& ${commands.sudo} touch ${getFileByTipe(
+      serverName,
+      FileTypes.SCRIPT,
+      "stop.sh"
+    )} ` +
     `&& ${commands.sudo} chmod 7777 ${getFileByTipe(
       serverName,
       FileTypes.SCRIPT,
       "stop.sh"
     )} ` +
-    `&& mkdir -p ${getFileByTipe(serverName, FileTypes.LOG, "")}` +
-    `&& touch ${getFileByTipe(serverName, FileTypes.LOG, "main.log")}`,
+    `&& ${commands.sudo} mkdir -p ${getFileByTipe(
+      serverName,
+      FileTypes.LOG,
+      ""
+    )}` +
+    `&& ${commands.sudo} touch ${getFileByTipe(
+      serverName,
+      FileTypes.LOG,
+      "main.log"
+    )}`,
 
   generateBaseTree: `tree ${getMainFolder()}`,
   installServer: (
@@ -33,7 +55,7 @@ export const commands = {
     startScript: IScriptInput,
     stopScript: IScriptInput
   ) =>
-    `${commands.sudo} touch ${SERVICE_PATH}/${serverName}.service` +
+    `${commands.sudo} touch ${SERVICE_PATH}/${serverName}.service ` +
     `&& ${commands.setFileContent(
       SERVICE_PATH + "/" + serverName + ".service",
       serviceTemplate(
@@ -43,6 +65,7 @@ export const commands = {
         stopScript
       )
     )} ` +
+    //`&& ${commands.sudo} systemctl daemon-reload ` +
     `&& ${commands.sudo} service ${serverName} start ` +
     `&& ${commands.sudo} service ${serverName} enable ` +
     `&& ${commands.sudo} service ${serverName} status `,
@@ -70,5 +93,5 @@ export const commands = {
 };
 
 function getMainFolder() {
-  return `/home/${config.USER}${config.MAIN_FOLDER}`;
+  return `/usr/bin${config.MAIN_FOLDER}`;
 }
