@@ -41,13 +41,11 @@ async function getFilesContent(
   return new Promise(async (resolve, reject) => {
     let files: IFile[] = [];
 
-    const fileNames = await EXECUTE(
-      commands.listFiles(serverName, FileTypes.SCRIPT)
-    );
+    const fileNames = await EXECUTE(commands.listFiles(serverName, type));
     if (fileNames.status === "OK") {
       const fileNamesList = fileNames.response.split("\n");
 
-      for (let index = 0; index < fileNamesList.length; index++) {
+      for (let index = 0; index < fileNamesList.length - 1; index++) {
         const fileContent = await EXECUTE(
           commands.readFile(fileNamesList[index], serverName, type)
         );

@@ -25,7 +25,7 @@ const getServerList = async (): Promise<{
     } else {
       const serverNameList = serverNames.response.split("\n");
 
-      for (let index = 0; index < serverNameList.length; index++) {
+      for (let index = 0; index < serverNameList.length - 1; index++) {
         const server = await getServerWithFilesAndContent(
           serverNameList[index]
         );
