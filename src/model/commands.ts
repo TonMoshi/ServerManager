@@ -85,7 +85,7 @@ export const commands = {
     `sh ${getMainFolder()}/${serverName}/Scripts/${fileName} ${parameters.join(
       " "
     )}`,
-  listServers: () => `ls ${config.MAIN_FOLDER}/`,
+  listServers: () => `ls ${getMainFolder()}/`,
   listFiles: (serverName: string, type: FileTypes) =>
     `ls ${getFolderByTipe(serverName, type)}`,
   readFile: (fileName: String, serverName: String, type: FileTypes) =>

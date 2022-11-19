@@ -29,11 +29,11 @@ router.get("/server", async function (req, res) {
 router.post(
   "/server",
   checkRequestData(
-    ["fileName", "serverName", "message", "type"],
+    ["name", "serverName", "content", "type"],
     RequestParamType.BODY
   ),
   async function (req, res) {
-    const { fileName, serverName, message, type } = req.body;
+    const { name, serverName, content, type } = req.body;
 
     // Creates the server file structure
     const resCreateServer = await createServer(serverName);
@@ -41,12 +41,7 @@ router.post(
       res.status(ERRORS.HTTP_ERROR_500).send(resCreateServer.response);
     } else {
       // Generate if necesary the file and update it's content with the recieved
-      const resCreateFile = await createFile(
-        fileName,
-        serverName,
-        message,
-        type
-      );
+      const resCreateFile = await createFile(name, serverName, content, type);
       if (resCreateFile.status === "KO") {
         res.status(ERRORS.HTTP_ERROR_500).send(resCreateFile.response);
       } else {
@@ -54,7 +49,7 @@ router.post(
         if (responseTree.status === "KO") {
           res.status(ERRORS.HTTP_ERROR_500).send(responseTree.response);
         } else {
-          res.send(responseTree.response);
+          res.send(responseTree);
         }
       }
     }
