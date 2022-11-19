@@ -1,16 +1,30 @@
 import express from "express";
+import { createFile } from "../controller/fileController";
 const router = express.Router();
 import {
-  createFile,
   createServer,
-  executeScript,
   getServerList,
   getTree,
-  readFile,
+  installServer,
+  uninstallServer,
 } from "../controller/serverController";
 import { checkRequestData } from "../interceptor/checks";
 import { ERRORS } from "../model/errors.enum";
-import { FileTypes, RequestParamType } from "../model/structures.enum";
+import { RequestParamType } from "../model/structures.enum";
+
+router.get("/tree", async function (req, res) {
+  const response = await getTree();
+  res.send(response);
+});
+
+router.get("/server", async function (req, res) {
+  const response = await getServerList();
+  if (response.error) {
+    res.status(ERRORS.HTTP_ERROR_500).send(response.error);
+  } else {
+    res.send(response.serverList);
+  }
+});
 
 router.post(
   "/server",
@@ -47,47 +61,36 @@ router.post(
   }
 );
 
-router.get("/tree", async function (req, res) {
-  const response = await getTree();
-  res.send(response);
-});
+router.post(
+  "/server/install",
+  checkRequestData(["serverName"], RequestParamType.BODY),
+  async function (req, res) {
+    const { serverName } = req.body;
 
-router.get("/server", async function (req, res) {
-  const response = await getServerList();
-  if (response.error) {
-    res.status(ERRORS.HTTP_ERROR_500).send(response.error);
-  } else {
-    res.send(response.serverList);
+    // Try to install the server
+    const installServerRes = await installServer(serverName);
+    if (installServerRes.status === "KO") {
+      res.status(ERRORS.HTTP_ERROR_500).send(installServerRes.response);
+    } else {
+      // Generate if necesary the file and update it's content with the recieved
+      res.send(installServerRes.response);
+    }
   }
-});
-
-router.get("/file", async function (req, res) {
-  const { fileName, serverName, type } = req.query;
-  const fileContent = await readFile(
-    fileName as String,
-    serverName as String,
-    type as FileTypes
-  );
-  res.send(fileContent);
-});
+);
 
 router.post(
-  "/script",
-  checkRequestData(
-    ["fileName", "serverName", "parameters"],
-    RequestParamType.BODY
-  ),
+  "/server/uninstall",
+  checkRequestData(["serverName"], RequestParamType.BODY),
   async function (req, res) {
-    const { fileName, serverName, parameters } = req.body;
-    const resCreateServer = await executeScript(
-      fileName,
-      serverName,
-      parameters
-    );
-    if (resCreateServer.status === "KO") {
-      res.status(ERRORS.HTTP_ERROR_500).send(resCreateServer.response);
+    const { serverName } = req.body;
+
+    // Try to install the server
+    const uninstallServerRes = await uninstallServer(serverName);
+    if (uninstallServerRes.status === "KO") {
+      res.status(ERRORS.HTTP_ERROR_500).send(uninstallServerRes.response);
     } else {
-      res.send(resCreateServer.response);
+      // Generate if necesary the file and update it's content with the recieved
+      res.send(uninstallServerRes.response);
     }
   }
 );

@@ -15,6 +15,8 @@ interface ENV {
   LOG: string | undefined;
   SCRIPTS: string | undefined;
   SERVER: string | undefined;
+  USER: string | undefined;
+  USERPASSW: string | undefined;
 }
 
 interface Config {
@@ -24,6 +26,8 @@ interface Config {
   LOG: string;
   SCRIPTS: string;
   SERVER: string;
+  USER: string;
+  USERPASSW: string;
 }
 
 // Loading process.env as ENV interface
@@ -36,6 +40,8 @@ const getConfig = (): ENV => {
     LOG: process.env.LOG,
     SCRIPTS: process.env.SCRIPTS,
     SERVER: process.env.SERVER,
+    USER: process.env.USER,
+    USERPASSW: process.env.USERPASSW,
   };
 };
 

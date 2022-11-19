@@ -11,7 +11,7 @@ export const getFileByTipe = (
   type: FileTypes,
   fileName: String
 ): String =>
-  `${config.MAIN_FOLDER}/${serverName}/${
+  `/home/${config.USER}${config.MAIN_FOLDER}/${serverName}/${
     type === FileTypes.LOG ? config.LOG : config.SCRIPTS
   }/${fileName}`;
 
